@@ -3,12 +3,14 @@
 
 """
 from flask import jsonify
-from fisher import app
+from flask import Blueprint
 from helper import is_isbn_or_key
 from yushu import YuShuBook
 
+web = Blueprint('web', __name__)
 
-@app.route('/book/search/<q>/<page>')
+
+@web.route('/book/search/<q>/<page>')
 def search(q: object, page: object) -> object:
     isbn_or_key = is_isbn_or_key(q)
     if isbn_or_key == 'key':
