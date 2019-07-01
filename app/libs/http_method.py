@@ -6,7 +6,8 @@ import requests
 
 class HTTP:
 
-    def get(self, url, returned_json=True):
+    @staticmethod
+    def get(url, returned_json=True):
         r = requests.get(url)
         if r.status_code != 200:
             return {} if returned_json else ''
