@@ -6,7 +6,7 @@ from app.models.book import db
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='static')  # 这个__name__决定了我们这个应用的根目录是app,而不是flasky
     app.config.from_object('app.secure')
     app.config.from_object('app.setting')
     register_blueprint(app)

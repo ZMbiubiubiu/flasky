@@ -7,25 +7,36 @@ from app.libs.http_method import HTTP
 
 
 class YuShuBook:
+    # 一个类要有特征(类变量/实例变量)和行为(方法)
     per_page = 15
     isbn_url = 'http://t.yushu.im/v2/book/isbn/{}'
     key_url = 'http://t.yushu.im/v2/book/search?q={}&count={}&start={}'
 
-    @classmethod
-    def search_by_isbn(cls, isbn):
-        url = cls.isbn_url.format(isbn)
+    def __init__(self):
+        self.total = 0
+        self.books = []
+
+    def search_by_isbn(self, isbn):
+        url = YuShuBook.isbn_url.format(isbn)
         result = HTTP.get(url)
-        return result
+        self.__fill_single(result)
 
-    @classmethod
-    def search_by_key(cls, keyword, page=1):
+    def __fill_single(self, data):
+        if data:
+            self.total = 1
+            self.books.append(data)
 
-        url = cls.key_url.format(keyword, current_app.config['PER_PAGE'],
-                                 cls.calculate_start(page))
+    def __fill_collection(self, data):
+        self.total = data['total']
+        self.books = data['books']
+
+    def search_by_key(self, keyword, page=1):
+
+        url = YuShuBook.key_url.format(keyword, current_app.config['PER_PAGE'],
+                                 self.calculate_start(page))
         result = HTTP.get(url)
-        return result
+        self.__fill_collection(result)
 
-    @staticmethod
-    def calculate_start(page):
+    def calculate_start(self, page):
         return (page-1) * current_app.config['PER_PAGE']
 

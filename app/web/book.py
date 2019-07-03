@@ -3,10 +3,12 @@
 
 """
 from flask import jsonify, request
+from app.view_models.book import BookCollection
 from app.forms.book import SearchForm
 from app.libs.helper import is_isbn_or_key
 from app.spider.yushu import YuShuBook
 from . import web
+import json
 
 
 @web.route('/book/search')
@@ -15,14 +17,17 @@ def search():
         ?q=金庸&page=1
     """
     form = SearchForm(request.args)
+    books = BookCollection()
     if form.validate():
         q = form.q.data.strip()   # 去掉空格
         page = form.page.data
         isbn_or_key = is_isbn_or_key(q)
+        yushu_book = YuShuBook()
         if isbn_or_key == 'key':
-            result = YuShuBook.search_by_key(q)
+            yushu_book.search_by_key(q, page)
         else:
-            result = YuShuBook.search_by_isbn(q, page)
-        return jsonify(result)
+            yushu_book.search_by_isbn(q)
+        books.fill(yushu_book, q)
+        return json.dumps(books, default=lambda o: o.__dict__)
     else:
         return jsonify(form.errors)
