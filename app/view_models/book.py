@@ -15,6 +15,11 @@ class BookViewModel:
         self.pages = book['pages'] or ''
         self.image = book['image']
 
+    def intro(self):
+        intros = filter(lambda x: True if x else False,
+                        [self.author, self.publisher, self.price])
+        return '/'.join(intros)
+
 
 class BookCollection:
 
@@ -28,6 +33,8 @@ class BookCollection:
         self.books = [BookViewModel(book) for book in yushu_book.books]
         self.keyword = keyword
 
+
+# 老的版本,伪面向对象代码
 class _BookViewModel:
 
     @staticmethod

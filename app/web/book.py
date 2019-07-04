@@ -31,7 +31,7 @@ def search():
         # return json.dumps(books, default=lambda o: o.__dict__)
     else:
         flash('您输入的查询字符串不符, 请在检查一下')
-    return render_template('search_result.html', books=books)
+    return render_template('search_result.html', books=books, form=form)
 
 
 @web.route('/book/<isbn>/detail')
