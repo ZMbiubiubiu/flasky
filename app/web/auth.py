@@ -1,9 +1,10 @@
-from . import web
+from app.web import web
+from flask import render_template
 
 
 @web.route('/register', methods=['GET', 'POST'])
 def register():
-    pass
+    return render_template('auth/register.html', form={'data': {}})
 
 
 @web.route('/login', methods=['GET', 'POST'])
