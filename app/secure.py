@@ -4,3 +4,4 @@
 
 DEBUG = False
 SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://root:mingyue@localhost:3306/fisher'
+SECRET_KEY = 'leefly'
