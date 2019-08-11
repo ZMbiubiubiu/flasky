@@ -5,6 +5,7 @@ from flask import Blueprint
 
 web = Blueprint('web', __name__)
 
+# 导入执行
 from app.web import book
 # from . import user
 from app.web import auth

@@ -54,3 +54,7 @@ def test():
     flash('hello world')
 
     return render_template('test.html', data=r)
+
+@web.route('/wishes')
+def save_to_wish():
+    pass

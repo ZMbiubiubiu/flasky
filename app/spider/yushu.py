@@ -2,19 +2,18 @@
 2019年 06月 11日 星期二 15:53:30 CST
 """
 
-from flask import current_app
+from flask import current_app  # 指代的就是当前的核心app对象
 from app.libs.http_method import HTTP
 
 
 class YuShuBook:
     # 一个类要有特征(类变量/实例变量)和行为(方法)
-    per_page = 15
     isbn_url = 'http://t.yushu.im/v2/book/isbn/{}'
     key_url = 'http://t.yushu.im/v2/book/search?q={}&count={}&start={}'
 
     def __init__(self):
         self.total = 0
-        self.books = []
+        self.books = []  # 真正的书籍数据
 
     def search_by_isbn(self, isbn):
         url = YuShuBook.isbn_url.format(isbn)
@@ -42,5 +41,5 @@ class YuShuBook:
 
     @property
     def first(self):
-        return self.books[0] if self.total >=1 else None
+        return self.books[0] if self.total >= 1 else None
 

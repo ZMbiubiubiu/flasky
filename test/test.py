@@ -13,3 +13,5 @@ a = current_app
 d = current_app.config['DEBUG']
 
 ctx.pop()
+
+
