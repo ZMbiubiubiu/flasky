@@ -6,7 +6,7 @@
 # @File    : auth.py
 # @Software: PyCharm
 from wtforms import Form, StringField, PasswordField
-from wtforms.validators import Email, DataRequired, Length, ValidationError
+from wtforms.validators import Email, DataRequired, Length, ValidationError, EqualTo
 
 from app.models.user import User
 
@@ -40,3 +40,18 @@ class LoginForm(Form):
     ])
     password = PasswordField(validators=[DataRequired(message="密码不可为空")])
 
+
+class EmailForm(Form):
+    email = StringField(validators=[DataRequired(), Length(8, 64), Email(message="输入的邮箱格式不对")])
+
+
+class ResetPasswordForm(Form):
+    password1 = StringField(validators=[
+        DataRequired(message="密码长度在需要在6-20个字符之间"),
+        Length(6, 20),
+        EqualTo('password2', message="两次输入的密码不同")
+    ])
+    password2 = StringField(validators=[
+        DataRequired(),
+        Length(6, 20)
+    ])

@@ -1,8 +1,11 @@
+from flask import current_app
+
 from app import login_manager
 from app.libs.helper import is_isbn_or_key
-from app.models.base import Base
+from app.models.base import Base, db
 
 from sqlalchemy import Column, String, Integer, Boolean, Float
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -55,6 +58,20 @@ class User(UserMixin, Base):
         else:
             return False
 
+    def generate_token(self, expiration=600):
+        """加密用户id，用来重置密码时，分辨到底是哪个用户要重置密码"""
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def reset_password(token, new_password):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        s.loads(token.encode('utf-8'))
+        uid = s.get('id')
+        with db.auto_commit():
+            user = User.query.get(uid)  # 查询的关键字为主键，可以使用get查询
+            user.password = new_password
+        return True
 
 @login_manager.user_loader
 def get_user(uid):

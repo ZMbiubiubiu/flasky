@@ -14,6 +14,7 @@ flask-sqlalchemy = "*"
 cymysql = "*"
 flask-login = "*"
 crypto = "*"
+flask-mail = "*"
 
 [requires]
 python_version = "3.7"

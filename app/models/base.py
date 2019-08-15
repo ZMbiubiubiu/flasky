@@ -1,6 +1,6 @@
 from datetime import datetime
 
-# 继承关系 BaseQuery(flask_sqlalchemy) -> Query(sqlalchemy)
+# 继承关系 BaseQuery(flask_sqlalchemy) 继承自 Query(sqlalchemy)
 from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, BaseQuery
 from sqlalchemy import Column, Integer, SmallInteger
 from contextlib import contextmanager
