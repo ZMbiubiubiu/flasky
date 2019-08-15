@@ -1,4 +1,4 @@
-from flask_login import login_user
+from flask_login import login_user, logout_user
 
 from app.forms.auth import RegisterForm, LoginForm
 from app.models.base import db
@@ -11,10 +11,11 @@ from flask import render_template, request, redirect, url_for, flash
 def register():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
-        user = User()
-        user.set_attrs(form.data)
-        db.session.add(user)
-        db.session.commit()
+        with db.auto_commit():
+            user = User()
+            user.set_attrs(form.data)
+            db.session.add(user)
+        # db.session.commit()
         return redirect(url_for('web.login'))
     return render_template('auth/register.html', form=form)
 
@@ -44,7 +45,6 @@ def forget_password_request():
 def forget_password(token):
     pass
 
-
 @web.route('/change/password', methods=['GET', 'POST'])
 def change_password():
     pass
@@ -52,7 +52,8 @@ def change_password():
 
 @web.route('/logout')
 def logout():
-    pass
+    logout_user()
+    return redirect(url_for('web.index'))
 
 
 @web.route('/register/confirm/<token>')

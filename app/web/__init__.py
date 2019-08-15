@@ -3,11 +3,10 @@
 """
 from flask import Blueprint
 
-web = Blueprint('web', __name__)
+web = Blueprint('web', __name__, template_folder='templates')
 
 # 导入执行
 from app.web import book
-# from . import user
 from app.web import auth
 from app.web import drift
 from app.web import gift
